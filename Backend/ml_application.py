@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import pandas as pd
+import pprint
 
 from sklearn import preprocessing
 from sklearn.linear_model import SGDClassifier
@@ -55,17 +56,22 @@ clean_data.fillna("NaN")
 clean_data = clean_data.dropna(axis='rows', how='any')
 
 # Remove rows with invalid job types
-clean_data = clean_data[~(clean_data['DeveloperType'] != 'Other' or 'Web Developer' or
-                          'Embedded applications/devices developer' or 'Mobile developer' or
-                          'Desktop applications developer' or 'DevOps specialist' or 'Quality assurance engineer' or
-                          'Machine learning specialist' or 'Desktop applications developer' or 'Graphics programming' or
-                          'Database administrator' or 'Systems administrator').any(axis=1)]
+keep = ['Other', 'Web Developer', 'Embedded applications/devices developer', 'Mobile developer',
+        'Desktop applications developer', 'DevOps specialist', 'Quality assurance engineer',
+        'Machine learning specialist', 'Desktop applications developer', 'Graphics programming',
+        'Database administrator', 'Systems administrator']
 
-print(clean_data.head(30))
+clean_data = clean_data[clean_data['DeveloperType'].isin(['Other', 'Web Developer',
+                                                          'Embedded applications/devices developer',
+                                                          'Mobile developer', 'Desktop applications developer',
+                                                          'DevOps specialist', 'Quality assurance engineer',
+                                                          'Machine learning specialist',
+                                                          'Desktop applications developer', 'Graphics programming',
+                                                          'Database administrator', 'Systems administrator'])]
+
 
 # Create Array of Unique Jobs
 unique_jobs = clean_data['DeveloperType'].unique()
-print(unique_jobs[:100])
 
 # Create Job Dictionary to associate job with id
 job_dict = {}
@@ -75,7 +81,16 @@ while counter >=0:
     counter = counter - 1
 
 # Replace all values in DeveloperType with dictionary key
-
+clean_data['DeveloperType'].replace('Other', '0', inplace=True)
+clean_data['DeveloperType'].replace('Embedded applications/devices developer', '1', inplace=True)
+clean_data['DeveloperType'].replace('Mobile developer', '2', inplace=True)
+clean_data['DeveloperType'].replace('Desktop applications developer', '3', inplace=True)
+clean_data['DeveloperType'].replace('DevOps specialist', '4', inplace=True)
+clean_data['DeveloperType'].replace('Machine learning specialist', '5', inplace=True)
+clean_data['DeveloperType'].replace('Graphics programming', '6', inplace=True)
+clean_data['DeveloperType'].replace('Quality assurance engineer', '7', inplace=True)
+clean_data['DeveloperType'].replace('Database administrator', '8', inplace=True)
+clean_data['DeveloperType'].replace('Systems administratorr', '9', inplace=True)
 
 
 # One Hot Encoding
@@ -111,4 +126,5 @@ classifier.fit(X_train, Y_train)
 me = [1, 2, 3, 4, 5, 6]
 
 predicted = classifier.predict(me)
-# print(clean_data['DeveloperType'].unique())
+print(job_dict.get(predicted[0]))
+
