@@ -1,16 +1,14 @@
 from __future__ import print_function
 
 import pandas as pd
-import pprint
 
 from sklearn import preprocessing
 from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import train_test_split
 
+
 # importing in the CSV
 data = pd.read_csv("survey_results_public.csv", index_col=0)
-
-# print(type(data))
 
 
 # cleaning the CSV
@@ -92,7 +90,6 @@ clean_data['DeveloperType'].replace('Quality assurance engineer', '7', inplace=T
 clean_data['DeveloperType'].replace('Database administrator', '8', inplace=True)
 clean_data['DeveloperType'].replace('Systems administratorr', '9', inplace=True)
 
-
 # One Hot Encoding
 # Find all categorical data
 categoricals = clean_data.select_dtypes(include=[object])
@@ -126,5 +123,4 @@ classifier.fit(X_train, Y_train)
 me = [1, 2, 3, 4, 5, 6]
 
 predicted = classifier.predict(me)
-print(job_dict.get(predicted[0]))
-
+job_prediction = job_dict.get(predicted[0])
