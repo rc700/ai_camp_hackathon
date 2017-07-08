@@ -1,20 +1,22 @@
-from flask import Flask
-from flask import request
+from flask import Flask, request
 import ml_application as ml
 
 app = Flask(__name__)
 
-@app.route('/placeholder_get', methods=['GET'])
-def placeholder_get():
-    return "Hello, World!"
+@app.route('/predict', methods=['POST'])
+def post_from_application():
+    print 'HELLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOO'
+    print ml.hey()
+    aList = eval(request.form.getlist('list')[0])
+    predict = ml.predict(aList)
+    print 'ALoha'
+    print predict
+    return predict
 
-@app.route('/placeholder_post', methods=['POST'])
-def placeholder_post():
-    return ml.classify(request.stream.read())
+@app.route('/posting', methods=['POST'])
+def posting():
 
-@app.route('/placeholder_post_image', methods=['POST'])
-def placeholder_post_image():
-    return ml.classify_image(request.data)
+    return 
 
 if __name__ == '__main__':
     app.run(debug=True)
