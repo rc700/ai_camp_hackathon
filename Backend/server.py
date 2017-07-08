@@ -5,12 +5,8 @@ app = Flask(__name__)
 
 @app.route('/predict', methods=['POST'])
 def post_from_application():
-    print 'HELLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOOOO'
-    print ml.hey()
     aList = eval(request.form.getlist('list')[0])
     predict = ml.predict(aList)
-    print 'ALoha'
-    print predict
     return predict
 
 @app.route('/posting', methods=['POST'])
